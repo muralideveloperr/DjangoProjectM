@@ -1,0 +1,1 @@
+from .populate_about_data import Command as PopulatePostsCommand

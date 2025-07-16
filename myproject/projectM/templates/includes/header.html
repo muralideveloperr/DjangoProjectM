@@ -1,0 +1,58 @@
+<!-- Head Section Start-->
+{% include 'includes/head.html' %}
+<!-- Head Section End-->
+<header id="header" class="header d-flex align-items-center light-background sticky-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+
+      <a href="{% url 'projectM:index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1 class="sitename">{{title}}</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="{% url 'projectM:index' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
+          <li><a href="{% url 'projectM:about' %}" class="{% if request.path == '/about' %}active{% endif %}">About</a></li>
+          <li><a href="{% url 'projectM:resume' %}" class="{% if request.path == '/resume' %}active{% endif %}">My Resume</a></li>
+          <li><a href="{% url 'projectM:services' %}" class="{% if request.path == '/services' %}active{% endif %}">Services</a></li>
+          <li><a href="{% url 'projectM:portfolio' %}" class="{% if request.path == '/portfolio' %}active{% endif %}">Portfolio</a></li>
+          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="{% url 'projectM:test' %}">Test</a></li>
+              <li><a href="{% url 'projectM:solar_system_explorer' %}">Solar System Explorer</a></li>
+              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="#">Deep Dropdown 1</a></li>
+                  <li><a href="#">Deep Dropdown 2</a></li>
+                  <li><a href="#">Deep Dropdown 3</a></li>
+                  <li><a href="#">Deep Dropdown 4</a></li>
+                  <li><a href="#">Deep Dropdown 5</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Dropdown 2</a></li>
+              <li><a href="#">Dropdown 3</a></li>
+              <li><a href="/admin" target="_blank">Admin</a></li>
+            </ul>
+          </li>
+          <li><a href="{% url 'projectM:contact' %}" class="{% if request.path == '/contact' %}active{% endif %}">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <div class="header-social-links">
+        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'projectM:logout' %}" class="sign-out"><i data-bs-toggle="tooltip" title="Sign Out" class="bi bi-box-arrow-right"></i></a>
+        {% else %}
+        <!-- <a href="{% url 'projectM:register' %}" data-bs-toggle="tooltip" title="Sign Up/Sign In" class="sign-up"><i class="bi bi-person-plus"></i></a> -->
+        <a href="{% url 'projectM:login' %}" data-bs-toggle="tooltip" title="Sign In" class="sign-in"><i class="bi bi-box-arrow-in-right"></i></a> 
+        {% endif %}
+        
+      </div>
+
+    </div>
+  </header>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do List with Deadlines</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+ <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 25px;
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+    }
+
+    .task-item.completed {
+      background-color: #d1e7dd;
+      text-decoration: line-through;
+    }
+
+    .task-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .deadline {
+      font-size: 0.9rem;
+      margin-top: 4px;
+      color: #6c757d;
+    }
+
+    .deadline.overdue {
+      color: #dc3545;
+      font-weight: bold;
+    }
+
+    .deadline.today {
+      color: #fd7e14;
+      font-weight: bold;
+    }
+
+    .task-buttons button {
+      margin-left: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+       <div class="d-flex justify-content-end">
+         <a href="{% url 'projectM:services' %}" class="btn btn-outline-secondary btn-sm shadow-sm home-btn">
+            Back to Services
+         </a>
+       </div>    
+  <h2 class="text-center mb-4">📝 My To-Do List with Deadlines</h2>
+  <!-- Error & Success Messages -->
+        {% include "includes/errors.html" %}
+  <form method="POST" class="row g-2 mb-4">
+    {% csrf_token %}
+    <div class="col-md-8">
+      <input type="text" name="task_name" class="form-control" placeholder="Enter a new task" value="{{ form.task_name.value|default:'' }}">
+    </div>
+    <div class="col-md-3">
+      <input type="date" name="deadline" class="form-control">
+    </div>
+    <div class="col-md-1 d-grid">
+      <button type="submit" class="btn btn-success">Add</button>
+    </div>
+  </form>
+
+  <div class="task-list">
+    <!-- Example Task 1 -->
+     {% if tasks %}
+     {% for task in tasks %}
+    <div class=" {% if task.is_completed == True %} task-item completed {% else %} task-item {% endif %}">
+      <div class="task-info">
+        <strong>{{task.task_name}}</strong>
+        <span class="{% if task.deadline < today %} deadline overdue {% elif task.deadline == today %} deadline today {% else %} deadline{% endif %}">Deadline:{% if task.deadline < today %} {{task.deadline|date:"Y-m-d"}} (Overdue) {% elif task.deadline == today %} Today {% else %} {{task.deadline|date:"Y-m-d"}} {% endif %}  </span>
+      </div>
+      <div class="task-buttons">
+        <button class="btn btn-sm btn-primary" title="Complete">
+        <a href="{% url 'projectM:complete_task' service.slug task.id %}"> <i class="bi bi-check-circle text-white"></i></a>
+        </button>
+        <button class="btn btn-sm btn-danger" onclick="confirmBeforeDelete(`{% url 'projectM:delete_task' service.slug task.id%}`)" title="Delete"><i class="bi bi-trash text-white"></i>
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="task-item">
+      <div class="task-text">
+        <strong>No Tasks Found</strong>
+      </div>
+    {% endif %}
+
+    <!-- Example Task 2 -->
+    {% comment %} <div class="task-item completed">
+      <div class="task-text">
+        <strong>Clean the house</strong>
+        <span class="deadline">Deadline: 2025-06-25</span>
+      </div>
+      <div class="task-buttons">
+        <button class="btn btn-sm btn-danger">Delete</button>
+      </div>
+    </div> {% endcomment %}
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+           function confirmBeforeDelete(url){
+             var userConfirmed = confirm("Are you sure you want to delete this task?")
+
+             if (userConfirmed){
+               window.location.href = url
+             }
+           } 
+       </script>
+</body>
+</html>
+

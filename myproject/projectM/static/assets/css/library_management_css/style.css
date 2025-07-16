@@ -1,0 +1,88 @@
+   body {
+      font-size: 16px !important;
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+    }
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .bi {
+      font-size: 3rem;
+    }
+    .btn {
+      font-size: 1rem;
+      padding: 0.5rem 1.2rem;
+    }
+    /* Custom Navbar Styles */
+    .custom-navbar {
+      background-color: #004080;
+      padding: 15px 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .custom-navbar .navbar-brand {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+
+    .custom-navbar .navbar-nav .nav-link {
+      color: #fff;
+      font-size: 1.7rem;
+      margin-right: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .custom-navbar .navbar-nav .nav-link:hover {
+      color: #ffcc00;
+      text-decoration: underline;
+    }
+
+    .navbar-toggler {
+      border-color: #fff;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba%28255, 255, 255, 0.7%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .home-btn {
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 8px;
+  transition: 0.3s ease-in-out;
+  font-size: 15px;
+}
+
+.home-btn:hover {
+  background-color: #f1f1f1;
+  color: #000;
+}
+    .card-box {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 25px;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .nav-tabs .nav-link.active {
+      background-color: #0d6efd;
+      color: white !important;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .alert {
+      margin-top: 10px;
+    }
+
+      .back-btn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-width: 2px;
+    border-radius: 10px;
+  }
+
+

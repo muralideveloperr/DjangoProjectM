@@ -1,0 +1,26 @@
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      max-width: 960px;
+      margin-top: 50px;
+    }
+
+    .card {
+      border-radius: 15px;
+    }
+
+    .table thead {
+      background-color: #0d6efd;
+      color: white;
+    }
+
+    .btn-sm i {
+      vertical-align: middle;
+    }
+
+    .header-icon {
+      font-size: 1.2rem;
+    }

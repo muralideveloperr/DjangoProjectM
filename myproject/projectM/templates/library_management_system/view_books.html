@@ -1,0 +1,112 @@
+<!-- Header Section Start -->
+{% include 'includes/lib_man_includes/lib_man_actions_header.html' %}
+<!-- Header Section End -->
+</head>
+<body>
+
+<div class="container">
+    <!-- Back Button Section Start -->
+   {% include 'includes/lib_man_includes/back_button.html' %}
+  <!-- Back Button Section Start -->
+  <div class="card shadow-sm p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="text-primary">
+        <i class="bi bi-book-half header-icon"></i> Books List
+      </h4>
+      <button class="btn btn-success btn-sm">
+        <a style="text-decoration: none;" href="{% url 'projectM:add_book' %}" class="text-white">
+        <i class="bi bi-plus-circle-fill"></i> Add New Book
+        </a>
+      </button>
+    </div>
+
+<form method="get" class="row mb-3 g-2 align-items-end">
+  <div class="col-md-6 col-lg-4">
+    <label for="searchInput" class="form-label fw-semibold">🔍 Search</label>
+    <input type="text" id="searchInput" name="q" class="form-control" placeholder="Title, Author, or ISBN" value="{{ query }}">
+  </div>
+  <div class="col-md-3 col-lg-2">
+    <label class="form-label d-none d-md-block">&nbsp;</label>
+    <button class="btn btn-primary w-100" type="submit">
+      <i class="bi bi-funnel-fill me-1"></i> Apply
+  
+    </button>
+  </div>
+</form>
+
+
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered align-middle">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Published</th>
+            <th scope="col">Category</th>
+            {% for book in books %}
+            {% if book.borrowed %}
+            <th scope="col">Borrowed</th>
+            <th scope="col">Borrowed Person</th>
+            <th scope="col">Borrowed Date</th>
+            <th scope="col">Return Date</th>
+            {% endif %}
+            {% endfor %}
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <!-- Replace with dynamic rows -->
+           {% if books %}
+           {% for book in books %}
+          <tr>
+            <td>{{book.id}}</td>
+            <td>{{book.book_title}}</td>
+            <td>{{book.author}}</td>
+            <td>{{book.published_date}}</td>
+            <td>{{book.category}}</td>
+            {% if book.borrowed %}
+            <td>{% if book.borrowed %} Yes {% else %} No {% endif %}</td>
+            <td>{% if book.borrowed %} {{book.borrowed_by}} {% else %} - {% endif %}</td>
+            <td>{% if book.borrowed %} {{book.borrowed_date}} {% else %} - {% endif %}</td>
+            <td>{% if book.borrowed %} {{book.return_date}} {% else %} - {% endif %}</td>
+            {% endif %}
+            <td>
+              <button class="btn btn-warning btn-sm">
+                <a href="{% url 'projectM:edit_book' book_id=book.id%}" class="text-white">
+                <i class="bi bi-pencil-fill"></i>
+                </a>
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="confirmBeforeDelete(`{% url 'projectM:delete_book' book_id=book.id %}`)">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="10">No Books Found</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+      <!-- Error & Success Messages -->
+        {% include "includes/errors.html" %}
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+           function confirmBeforeDelete(url){
+             var userConfirmed = confirm("Are you sure you want to delete this book?")
+
+             if (userConfirmed){
+               window.location.href = url
+             }
+           } 
+       </script>
+</body>
+</html>

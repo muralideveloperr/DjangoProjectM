@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Board</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .job-board {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 25px;
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
+    }
+    .job-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: 0.3s;
+    }
+    .job-card:hover {
+      background-color: #f1f1f1;
+    }
+    .job-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .job-meta {
+      font-size: 14px;
+      color: #6c757d;
+    }
+    .btn-apply {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container job-board">
+       <div class="d-flex justify-content-end">
+         <a href="{% url 'projectM:services' %}" class="btn btn-outline-secondary btn-sm shadow-sm home-btn">
+            Back to Services
+         </a>
+       </div>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-briefcase-fill me-2"></i>Job Board</h2>
+    {% if perms.projectM.add_jobboard %}
+    <a href="{% url 'projectM:post_job' %}" class="btn btn-success"><i class="bi bi-plus-circle me-1"></i> Post a Job</a>
+    {% endif %}
+  </div>
+  <!-- Error & Success Messages -->
+        {% include "includes/errors.html" %}
+
+  {% if job_board %}
+  <!-- Job Cards -->
+   {% for job in job_board %}
+  <div class="job-card">
+    <div class="job-title">{{ job.job_title }}</div>
+    <div class="job-meta">Company: {{ job.company_name }} | Location: {{ job.location }} | Type: {{ job.job_type }}</div>
+    <p class="mt-2">{{ job.job_description }}</p>
+    {% if perms.projectM.add_jobapplications %}
+    <a href="{% url 'projectM:apply_job' %}" class="btn btn-primary btn-sm btn-apply"><i class="bi bi-send-check me-1"></i> Apply Now</a>
+  </div>
+  {% endif %}
+  {% endfor %}
+
+  {% else %}
+  <div class="job-card">
+  <div class="job-title">No jobs found.</div>
+  </div>
+  {% endif %}
+
+  
+
+
+</body>
+</html>
