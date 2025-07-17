@@ -22,9 +22,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td>1</td><td>John</td><td>5</td></tr>
-        <tr><td>2</td><td>Jane</td><td>4</td></tr>
-        <tr><td>3</td><td>Alex</td><td>3</td></tr>
+        {% for entry  in ranked_leaderboard %}
+        <tr><td>{{ entry.rank }}</td><td>{{ entry.user.username | title }}</td><td>{{ entry.score }}</td></tr>
+        {% empty %}
+        <tr>No Data Found!</tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>

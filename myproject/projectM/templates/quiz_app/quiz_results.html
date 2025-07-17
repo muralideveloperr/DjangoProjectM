@@ -14,7 +14,7 @@
   <div class="container mt-5 text-center">
     <h2 class="mb-4">🎉 Quiz Completed!</h2>
     <p class="fs-4">You scored <strong>{{ user_answer_count }}/{{ quiz_instance.number_of_questions }}</strong></p>
-    <a href="{% url 'projectM:leaderboard' %}" class="btn btn-outline-primary">View Leaderboard</a>
+    <a href="{% url 'projectM:leaderboard' quiz_id=quiz_instance.id %}" class="btn btn-outline-primary">View Leaderboard</a>
   </div>
 </body>
 </html>

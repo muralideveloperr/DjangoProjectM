@@ -54,7 +54,7 @@ urlpatterns = [
     path('quiz_app/view_participants', views.view_participants, name='view_participants'),
     path('quiz_app/quiz_results/<int:quiz_id>', views.quiz_results, name='quiz_results'),
     path('quiz_app/quiz/<int:quiz_id>/<int:question_id>', views.quiz, name='quiz'),
-    path('quiz_app/leaderboard', views.leaderboard, name='leaderboard'),
+    path('quiz_app/leaderboard/<int:quiz_id>', views.leaderboard, name='leaderboard'),
     path('quiz_app/add_quiz_details', views.add_quiz_details, name='add_quiz_details'),
    ]
 

@@ -943,18 +943,31 @@ def quiz(request, quiz_id, question_id):
         if next_question:
             return redirect('projectM:quiz', quiz_id=quiz_id, question_id=next_question.id)
         else:
-            add_data_in_leaderboard = QuizLeaderboard.objects.create(
+            existing_data = QuizLeaderboard.objects.filter(
                 user=request.user,
                 quiz_taken=quiz_instance
             )
-            get_score = UserAnswer.objects.filter(
-                user=request.user,
-                quiz=quiz_instance,
-                is_correct=True
-            )
-            user_answer_count = get_score.count()
-            add_data_in_leaderboard.score = user_answer_count
-            add_data_in_leaderboard.save()
+            if not existing_data:
+                add_data_in_leaderboard = QuizLeaderboard.objects.create(
+                    user=request.user,
+                    quiz_taken=quiz_instance
+                    )
+                get_score = UserAnswer.objects.filter(
+                    user=request.user,
+                    quiz=quiz_instance,
+                    is_correct=True
+                    )
+                user_answer_count = get_score.count()
+                add_data_in_leaderboard.score = user_answer_count
+                add_data_in_leaderboard.save()
+            else:
+                get_score = UserAnswer.objects.filter(
+                    user=request.user,
+                    quiz=quiz_instance,
+                    is_correct=True
+                    )
+                user_answer_count = get_score.count()
+                existing_data.update(score=user_answer_count)
 
 
             return redirect('projectM:quiz_results', quiz_id=quiz_id)
@@ -980,7 +993,8 @@ def quiz_results(request, quiz_id):
     user_answer = UserAnswer.objects.filter(
         user=request.user,
         quiz=quiz_instance,
-        is_correct=True
+        is_correct=True,
+        active=True
     )
     user_answer_count = user_answer.count()
     print(f"User Answer Count: {user_answer_count}")
@@ -993,12 +1007,45 @@ def quiz_results(request, quiz_id):
                                                         'user_answer_count': user_answer_count,
                                                         })
 
-def leaderboard(request):
+def leaderboard(request, quiz_id):
     service = Services.objects.get(name='Quiz App')
+    # leaderboard_data = QuizLeaderboard.objects.all().order_by('score')
+    quiz_instance = get_object_or_404(QuizDetails, id=quiz_id)
+    quiz_answers = UserAnswer.objects.filter(
+        user = request.user,
+        quiz = quiz_instance,
+        active = True
+    )
+
+    # for answer in quiz_answers:
+    #     answer.active = False
+    #     answer.save()
+
+    quiz_answers.update(active=False)
+
+    # Get leaderboard data for this quiz, ordered by score DESC
+    leaderboard_data = QuizLeaderboard.objects.filter(
+        quiz_taken = quiz_instance
+    ).order_by('-score')
+
+    # Prepare ranked leaderboard
+    ranked_leaderboard = []
+    rank = 1
+    for entry in leaderboard_data:
+        ranked_leaderboard.append({
+            'user': entry.user,
+            'score': entry.score,
+            'rank': rank
+        })
+        rank += 1
 
 
     return render(request, 'quiz_app/leaderboard.html', {'title': title,
-                                                        'slug': service.slug})
+                                                        'slug': service.slug,
+                                                        'leaderboard_data': leaderboard_data,
+                                                        'quiz_instance': quiz_instance,
+                                                        'ranked_leaderboard': ranked_leaderboard,
+                                                        })
 
 # -----Quiz App End -----
 
