@@ -7,7 +7,7 @@ from projectM.models import About, Services, ChatbotRules
 from projectM.forms import AddBookForm, AddExpenseForm, ContactManagerForm, JobApplicationForm, JobBoardForm, LoginForm, ManageLibraryCardForm, OnlinePollingSystemForm, PollOptionsForm, QuizDetailsForm, QuizQuestionsForm, ResumeGeneratorForm, RegisterForm, ToDoListForm, UserAnswerForm
 from django.contrib import messages
 from django.shortcuts import redirect
-from .models import AddBook, ContactManager, ExpenseCategory, ExpensesTracker, JobBoard, JobType, ManageLibraryCard, OnlinePollingSystem, PollOptions, QuizDetails, QuizOptions, QuizParticipants, QuizQuestions, Resume, ToDoList, UserAnswer
+from .models import AddBook, ContactManager, ExpenseCategory, ExpensesTracker, JobBoard, JobType, ManageLibraryCard, OnlinePollingSystem, PollOptions, QuizDetails, QuizLeaderboard, QuizOptions, QuizParticipants, QuizQuestions, Resume, ToDoList, UserAnswer
 from django.template.loader import get_template
 import pdfkit
 from django.http import HttpResponse
@@ -943,6 +943,20 @@ def quiz(request, quiz_id, question_id):
         if next_question:
             return redirect('projectM:quiz', quiz_id=quiz_id, question_id=next_question.id)
         else:
+            add_data_in_leaderboard = QuizLeaderboard.objects.create(
+                user=request.user,
+                quiz_taken=quiz_instance
+            )
+            get_score = UserAnswer.objects.filter(
+                user=request.user,
+                quiz=quiz_instance,
+                is_correct=True
+            )
+            user_answer_count = get_score.count()
+            add_data_in_leaderboard.score = user_answer_count
+            add_data_in_leaderboard.save()
+
+
             return redirect('projectM:quiz_results', quiz_id=quiz_id)
             # return redirect('projectM:quiz_results')
 
